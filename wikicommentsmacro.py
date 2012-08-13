@@ -43,9 +43,11 @@ class WikiCommentsMacro(WikiMacroBase):
         out = StringIO.StringIO()
         Formatter(self.env, formatter.context).format(text, out)
         text = out.getvalue()
-        comment_author = "moto" #args['author']
-        comment_date = "foko" #args['date']
-        comment_body = text[:text.rfind("#")]
+        comment_author = args['author']
+        comment_date = args['date']
+        comment_id = args['id']
+        comment_body = text[:text.rfind("#")] #skip last hashtag
+        page_url = "/passengers/helloworld"
         return """
     <div class="comment" style="width: 600px;margin-left:30px;">
         <div class="comment_head" style="width: 600px;">
@@ -57,6 +59,11 @@ class WikiCommentsMacro(WikiMacroBase):
             """+comment_author+""": """+comment_date+"""
         </div>
         <div class="comment_body">"""+comment_body+"""</div>
+        <form action='"""+page_url+"""' method="POST">
+            <textarea name="comment"></textarea>
+            <input type="submit" name="comment_submit" value="Submit">
+            <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
+        </form>
     </div>
     """
                 

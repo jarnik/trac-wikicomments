@@ -59,7 +59,9 @@ class WikiCommentsPlugin(Component):
         #self.env.log.debug("*** Hey, req match  ")
         #return req.path_info == '/helloworld'
         self.env.log.debug("*** Hey, req args %s " % req.args )
-        return req.args['hello'] == u'1'
+        #return req.args.has_key['comment_submit']
+        return req.args['comment_submit'] == u'Submit'
+        #return True
     def process_request(self, req):
         #self.env.log.debug("*** Hey, req process  ")
         #self.perm.assert_permission (perm.WIKI_MODIFY)
@@ -67,8 +69,8 @@ class WikiCommentsPlugin(Component):
         p = WikiPage(self.env, "TestParent")
 
         author_name = req.remote_user
-        comment_text = "lorem ipsum dolor sit amet"
-        #comment_text = req.args['comment']
+        #comment_text = "lorem ipsum dolor sit amet"
+        comment_text = req.args['comment']
         comment_parent = 'adfe590bd0ae7f1973ff45c23a8914de'
         comment_date = '2012-07-12 12:10:31'
         comment_id = "%032x" % random.getrandbits(128)
