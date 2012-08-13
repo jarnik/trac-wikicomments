@@ -45,7 +45,7 @@ class WikiCommentsMacro(WikiMacroBase):
         text = out.getvalue()
         comment_author = "moto" #args['author']
         comment_date = "foko" #args['date']
-        comment_body = text
+        comment_body = text[:text.rfind("#")]
         return """
     <div class="comment" style="width: 600px;margin-left:30px;">
         <div class="comment_head" style="width: 600px;">
