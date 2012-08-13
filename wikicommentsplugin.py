@@ -64,15 +64,19 @@ class WikiCommentsPlugin(Component):
         #self.req.hdf.setValue('wiki.action', 'addComment')
         p = WikiPage(self.env, "TestParent")
 
+        author_name = req.remote_user
         comment_text = "lorem ipsum dolor sit amet"
         #comment_text = req.args['comment']
         comment_parent = '12312'
+        comment_date = '2012-07-12 12:10:31'
+        comment_id = "%032x" % random.getrandbits(128)
+        comment_out = '{{{#!WikiComments author="sykysanchan" date="2012-10-20 15:45:30" id="1""\n%s\n}}}' 
+            % (author_name,comment_date,comment_id,comment_text)
 
-        author_name = req.remote_user
         changeset_comment = "%s..." % comment_text[:20]
 
         # add comment to wiki page text
-        p.text = p.text + comment_text
+        p.text = p.text + comment_out
 
         p.save( author_name, changeset_comment, req.remote_addr )
 
