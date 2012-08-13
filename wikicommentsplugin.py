@@ -23,6 +23,7 @@ from trac.util.html import html
 import StringIO
 import trac.perm
 import random
+import string
 
 __all__ = ['WikiCommentsPlugin']
 
@@ -71,13 +72,17 @@ class WikiCommentsPlugin(Component):
         comment_parent = 'adfe590bd0ae7f1973ff45c23a8914de'
         comment_date = '2012-07-12 12:10:31'
         comment_id = "%032x" % random.getrandbits(128)
-        comment_out = '{{{#!WikiComments author="%s" date="%s" id="%s""\n%s\n}}}\n' % (author_name,comment_date,comment_id,comment_text)
-
         changeset_comment = "%s..." % comment_text[:20]
 
         insertion_index = string.find( p.text, "#%s" % comment_parent )
         if ( insertion_index != -1 ):
-            self.env.log.debug("*** inserting at %s " % insertion_index )
+            heads = string.count(p.text,"{{{#!WikiComments",0,insertion_index)
+            tails = string.count(p.text,"}}}",0,insertion_index)
+            level = heads - tails
+            self.env.log.debug("*** inserting at %s level %i = %i - %i " % (insertion_index, level, heads, tails ) )
+            padding = "    " * level
+            comment_out = '%s{{{#!WikiComments author="%s" date="%s" id="%s""\n%s%s\n%s#%s\n%s}}}\n' \
+                % (padding, author_name,comment_date,comment_id,padding,comment_text,padding,comment_id,padding)
             p.text = p.text[:insertion_index]+comment_out+p.text[insertion_index:]
 
         # add comment to wiki page text
