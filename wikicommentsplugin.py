@@ -22,6 +22,7 @@ from trac.web import IRequestHandler
 from trac.util.html import html
 import StringIO
 import trac.perm
+import random
 
 __all__ = ['WikiCommentsPlugin']
 
@@ -70,8 +71,7 @@ class WikiCommentsPlugin(Component):
         comment_parent = '12312'
         comment_date = '2012-07-12 12:10:31'
         comment_id = "%032x" % random.getrandbits(128)
-        comment_out = '{{{#!WikiComments author="sykysanchan" date="2012-10-20 15:45:30" id="1""\n%s\n}}}' 
-            % (author_name,comment_date,comment_id,comment_text)
+        comment_out = '{{{#!WikiComments author="%s" date="%s" id="%s""\n%s\n}}}\n' % (author_name,comment_date,comment_id,comment_text)
 
         changeset_comment = "%s..." % comment_text[:20]
 
