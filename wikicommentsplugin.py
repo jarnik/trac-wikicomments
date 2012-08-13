@@ -68,15 +68,20 @@ class WikiCommentsPlugin(Component):
         author_name = req.remote_user
         comment_text = "lorem ipsum dolor sit amet"
         #comment_text = req.args['comment']
-        comment_parent = '12312'
+        comment_parent = 'adfe590bd0ae7f1973ff45c23a8914de'
         comment_date = '2012-07-12 12:10:31'
         comment_id = "%032x" % random.getrandbits(128)
         comment_out = '{{{#!WikiComments author="%s" date="%s" id="%s""\n%s\n}}}\n' % (author_name,comment_date,comment_id,comment_text)
 
         changeset_comment = "%s..." % comment_text[:20]
 
+        insertion_index = string.find( p.text, "#%s" % comment_parent )
+        if ( insertion_index != -1 ):
+            self.env.log.debug("*** inserting at %s " % insertion_index )
+            p.text = p.text[:insertion_index]+comment_out+p.text[insertion_index:]
+
         # add comment to wiki page text
-        p.text = p.text + comment_out
+        #p.text = p.text + comment_out
 
         p.save( author_name, changeset_comment, req.remote_addr )
 
