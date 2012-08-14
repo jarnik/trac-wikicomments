@@ -56,7 +56,7 @@ class WikiCommentsMacro(WikiMacroBase):
         </div>
         <div class="comment_body">"""+comment_body+"""
             <form action='"""+form_url+"""' method="POST" id='comment_"""+comment_id+"""' >
-                <textarea name="comment"></textarea>
+                <textarea name="comment" rows="60" cols="4"></textarea>
                 <input type="submit" name="comment_submit" value="Submit">
                 <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
                 <input type="hidden" name="target_page" value='"""+page_url+"""' />
