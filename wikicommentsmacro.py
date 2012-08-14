@@ -15,11 +15,9 @@ from trac.core import *
 from trac.wiki.api import parse_args
 from trac.wiki.macros import WikiMacroBase
 from trac.wiki import Formatter
-#from StringIO import StringIO
 import StringIO
 
 __all__ = ['WikiCommentsMacro']
-
 
 class WikiCommentsMacro(WikiMacroBase):
     """AutoNav finds all references in the wiki section to this Document
@@ -38,7 +36,6 @@ class WikiCommentsMacro(WikiMacroBase):
     `[[AutoNav(MyPage, MyPageToo, MyPageThree)]]` -> references merged with MyPage, MyPageToo and MyPageThree
     """
     
-    #def render_macro(self, formatter, name, args):
     def expand_macro(self, formatter, name, text, args):
         out = StringIO.StringIO()
         Formatter(self.env, formatter.context).format(text, out)
@@ -46,12 +43,13 @@ class WikiCommentsMacro(WikiMacroBase):
         comment_author = args['author']
         comment_date = args['date']
         comment_id = args['id']
-        comment_body = text[:text.rfind("#")] #skip last hashtag
+        comment_body = text[:text.rfind("=")] #skip last hashtag
         form_token = formatter.req.incookie['trac_form_token'].value
-        page_url = "/passengers/add-wiki-comment"
-        #page_url = "/passengers/wiki/TestParent"
+        form_url = formatter.req.base_path+"/add-wiki-comment"
+        page_url = formatter.req.path_info
         return """
     <div class="comment" style="width: 600px;margin-left:30px;">
+        <a name='"""+comment_id+"""'>
         <div class="comment_head" style="width: 600px;">
             <span class="comment_buttons" style="float:right;">
                 <span class="comment_button">
@@ -61,53 +59,14 @@ class WikiCommentsMacro(WikiMacroBase):
             """+comment_author+""": """+comment_date+"""
         </div>
         <div class="comment_body">"""+comment_body+"""</div>
-        <form action='"""+page_url+"""' method="POST">
+        <form action='"""+form_url+"""' method="POST">
             <textarea name="comment"></textarea>
             <input type="submit" name="comment_submit" value="Submit">
             <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
+            <input type="hidden" name="target_page" value='"""+page_url+"""' />
             <input type="hidden" name="__FORM_TOKEN" value='"""+form_token+"""' />
         </form>
+        </a>
     </div>
     """
-                
-	#cursor = formatter.db.cursor()
-	#
-	## get the refere page name
-	#thispage = formatter.context.id
-	#
-	## process arguments
-	#pages, kw = parse_args(args)
-	#
-	## query to get the latest version of a page
-	#query = """
-	#    SELECT w1.name 
-	#    FROM wiki w1, 
-	#        ( 
-	#	    SELECT name, MAX(version) AS version 
-	#	    FROM wiki 
-	#	    GROUP BY name 
-	#	) w2 
-	#    WHERE 
-	#        w1.version = w2.version AND 
-	#	w1.name = w2.name AND 
-	#	w1.text LIKE \'%%%s%%\' 
-	#    ORDER BY w1.name""" % thispage
-	#
-	## TODO: use named parameters
-	#cursor.execute(query)
-	#
-	## for each answer store in page
-    #    for page, in cursor:
-	#    if page == thispage:
-	#        continue
-	#    pages.append(page)
-	#
-	#pages.sort()
-	#
-	## get the references to each list
-    #    def link(page):
-    #        return tag.a(page, href=formatter.href.wiki(page))
-    #    
-	#return tag(tag.strong('Navigation:'), '(',
-    #               [[link(page), ', '] for page in pages[:-2]],
-    #               link(page), ')')
+
