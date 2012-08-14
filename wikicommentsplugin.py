@@ -55,7 +55,7 @@ class WikiCommentsPlugin(Component):
         page_name = req.args['target_page'][req.args['target_page'].find('wiki')+5:]
         p = WikiPage(self.env, page_name )
 
-        author_name = req.remote_user
+        author_name = req.authname
         comment_text = req.args['comment']
         comment_parent = req.args['comment_parent']
         comment_date = '2012-07-12 12:10:31'
@@ -77,4 +77,11 @@ class WikiCommentsPlugin(Component):
 
         p.save( author_name, changeset_comment, req.remote_addr )
         req.redirect(redirect_url)
+
+        #content = req.remote_user+'Hello World!'
+        #req.send_response(200)
+        #req.send_header('Content-Type', 'text/plain')
+        #req.send_header('Content-Length', len(content))
+        #req.end_headers()
+        #req.write(content)
 
