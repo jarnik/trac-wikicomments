@@ -69,8 +69,9 @@ class WikiCommentsPlugin(Component):
             tails = string.count(p.text,"}}}",0,insertion_index)
             level = heads - tails
             #self.env.log.debug("*** inserting at %s level %i = %i - %i " % (insertion_index, level, heads, tails ) )
-            padding_short = "    " * max(0,level-1)
-            padding = "    " * level
+            #padding_short = "    " * max(0,level-1)
+            #padding = "    " * level
+            padding = ""
             comment_out = '%s{{{#!WikiComments author="%s" date="%s" id="%s""\n%s%s\n%s=%s\n%s}}}\n' \
                 % (padding, author_name,comment_date,comment_id,padding,comment_text,padding,comment_id,padding)
             p.text = p.text[:insertion_index]+comment_out+p.text[insertion_index:]
