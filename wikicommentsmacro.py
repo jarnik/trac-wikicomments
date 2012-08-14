@@ -49,14 +49,10 @@ class WikiCommentsMacro(WikiMacroBase):
         page_url = formatter.req.path_info
         return """
     <div class="comment" style="width: 600px;margin-left:30px;">
-        <a name='"""+comment_id+"""'>
+        <a name='"""+comment_id+"""'></a>
         <div class="comment_head" style="width: 600px;">
-            <span class="comment_buttons" style="float:right;">
-                <span class="comment_button">
-                    <a href="#reply">Reply</a>
-                </span>
-            </span>
             """+comment_author+""": """+comment_date+"""
+            <a href="#reply">Reply</a>
         </div>
         <div class="comment_body">"""+comment_body+"""</div>
         <form action='"""+form_url+"""' method="POST">
@@ -66,7 +62,6 @@ class WikiCommentsMacro(WikiMacroBase):
             <input type="hidden" name="target_page" value='"""+page_url+"""' />
             <input type="hidden" name="__FORM_TOKEN" value='"""+form_token+"""' />
         </form>
-        </a>
     </div>
     """
 
