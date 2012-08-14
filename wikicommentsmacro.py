@@ -50,13 +50,13 @@ class WikiCommentsMacro(WikiMacroBase):
         return """
     <div class="comment" style="width: 600px;margin-left:30px;">
         <a name='"""+comment_id+"""'></a>
-        <div class="comment_head" style="width: 600px;">
+        <div class="comment_head" style="width: 600px; background:#eee;font-size:80%;">
             """+comment_author+""": """+comment_date+"""
             <a href="#reply" id='reply_"""+comment_id+"""'>Reply</a>
         </div>
         <div class="comment_body">"""+comment_body+"""
             <form action='"""+form_url+"""' method="POST" id='comment_"""+comment_id+"""' >
-                <textarea name="comment" rows="60" cols="4"></textarea>
+                <textarea name="comment" rows="4" cols="90"></textarea>
                 <input type="submit" name="comment_submit" value="Submit">
                 <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
                 <input type="hidden" name="target_page" value='"""+page_url+"""' />
