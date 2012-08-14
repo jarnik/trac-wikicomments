@@ -58,10 +58,11 @@ class WikiCommentsPlugin(Component):
     
     def match_request(self, req):
         #self.env.log.debug("*** Hey, req match  ")
-        #return req.path_info == '/helloworld'
+        return req.path_info == '/add-wiki-comment'
         self.env.log.debug("*** Hey, req args %s " % req.args )
         #return req.args.has_key['comment_submit']
         return req.args['comment_submit'] == u'Submit'
+        #return req.args['comment_submit'] == u'Submit'
         #return True
     def process_request(self, req):
         #self.env.log.debug("*** Hey, req process  ")
