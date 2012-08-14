@@ -54,20 +54,24 @@ class WikiCommentsMacro(WikiMacroBase):
             """+comment_author+""": """+comment_date+"""
             <a href="#reply" id='reply_"""+comment_id+"""'>Reply</a>
         </div>
-        <div class="comment_body">"""+comment_body+"""</div>
-        <form action='"""+form_url+"""' method="POST" id='comment_"""+comment_id+"""' >
-            <textarea name="comment"></textarea>
-            <input type="submit" name="comment_submit" value="Submit">
-            <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
-            <input type="hidden" name="target_page" value='"""+page_url+"""' />
-            <input type="hidden" name="__FORM_TOKEN" value='"""+form_token+"""' />
-        </form>
+        <div class="comment_body">"""+comment_body+"""
+            <form action='"""+form_url+"""' method="POST" id='comment_"""+comment_id+"""' >
+                <textarea name="comment"></textarea>
+                <input type="submit" name="comment_submit" value="Submit">
+                <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
+                <input type="hidden" name="target_page" value='"""+page_url+"""' />
+                <input type="hidden" name="__FORM_TOKEN" value='"""+form_token+"""' />
+            </form>
+        </div>
         <script type="text/javascript">
               jQuery(document).ready(function($) {
-                $('#comment_"""+comment_id+"""').hide();
-                $('#reply_"""+comment_id+"""').click(function(){
-                    $('#comment_"""+comment_id+"""').show();
-                    //alert("asas");
+                var id = '"""+comment_id+"""';
+                $('#comment_'+id).hide();
+                var subcomments = $('#reply_'+id).parent().next().find('div.comment');
+                if ( subcomments.length > 0 )
+                    $('#comment_'+id).insertBefore($(subcomments).first());
+                $('#reply_'+id).click(function(){
+                    $('#comment_'+id).show();
                 });
               });
         </script>
