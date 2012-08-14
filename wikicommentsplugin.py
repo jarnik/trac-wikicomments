@@ -29,7 +29,8 @@ __all__ = ['WikiCommentsPlugin']
 
 
 class WikiCommentsPlugin(Component):
-    implements(INavigationContributor, IRequestHandler)
+    implements(IRequestHandler)
+    #implements(INavigationContributor, IRequestHandler)
 
     """AutoNav finds all references in the wiki section to this Document
 
@@ -47,13 +48,13 @@ class WikiCommentsPlugin(Component):
     `[[AutoNav(MyPage, MyPageToo, MyPageThree)]]` -> references merged with MyPage, MyPageToo and MyPageThree
     """
     # INavigationContributor methods
-    def get_active_navigation_item(self, req):
-        #self.env.log.debug("*** Hey, nav item  ")
-        return 'helloworld'
-    def get_navigation_items(self, req):
-        #self.env.log.debug("*** Hey, nav getitem  ")
-        yield ('mainnav', 'helloworld',
-            html.A('Hello world', href= req.href.helloworld()))
+    #def get_active_navigation_item(self, req):
+    #    #self.env.log.debug("*** Hey, nav item  ")
+    #    return 'helloworld'
+    #def get_navigation_items(self, req):
+    #    #self.env.log.debug("*** Hey, nav getitem  ")
+    #    yield ('mainnav', 'helloworld',
+    #        html.A('Hello world', href= req.href.helloworld()))
     
     def match_request(self, req):
         #self.env.log.debug("*** Hey, req match  ")

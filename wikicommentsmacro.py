@@ -47,7 +47,9 @@ class WikiCommentsMacro(WikiMacroBase):
         comment_date = args['date']
         comment_id = args['id']
         comment_body = text[:text.rfind("#")] #skip last hashtag
-        page_url = "/passengers/helloworld"
+        form_token = formatter.req.incookie['trac_form_token'].value
+        page_url = "/passengers/add-wiki-comment"
+        #page_url = "/passengers/wiki/TestParent"
         return """
     <div class="comment" style="width: 600px;margin-left:30px;">
         <div class="comment_head" style="width: 600px;">
@@ -63,6 +65,7 @@ class WikiCommentsMacro(WikiMacroBase):
             <textarea name="comment"></textarea>
             <input type="submit" name="comment_submit" value="Submit">
             <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
+            <input type="hidden" name="__FORM_TOKEN" value='"""+form_token+"""' />
         </form>
     </div>
     """
