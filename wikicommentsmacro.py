@@ -52,16 +52,25 @@ class WikiCommentsMacro(WikiMacroBase):
         <a name='"""+comment_id+"""'></a>
         <div class="comment_head" style="width: 600px;">
             """+comment_author+""": """+comment_date+"""
-            <a href="#reply">Reply</a>
+            <a href="#reply" id='reply_"""+comment_id+"""'>Reply</a>
         </div>
         <div class="comment_body">"""+comment_body+"""</div>
-        <form action='"""+form_url+"""' method="POST">
+        <form action='"""+form_url+"""' method="POST" id='comment_"""+comment_id+"""' >
             <textarea name="comment"></textarea>
             <input type="submit" name="comment_submit" value="Submit">
             <input type="hidden" name="comment_parent" value='"""+comment_id+"""'>
             <input type="hidden" name="target_page" value='"""+page_url+"""' />
             <input type="hidden" name="__FORM_TOKEN" value='"""+form_token+"""' />
         </form>
+        <script type="text/javascript">
+              jQuery(document).ready(function($) {
+                $('#comment_"""+comment_id+"""').hide();
+                $('#reply_"""+comment_id+"""').click(function(){
+                    $('#comment_"""+comment_id+"""').show();
+                    //alert("asas");
+                });
+              });
+        </script>
     </div>
     """
 
