@@ -17,7 +17,8 @@ from trac.wiki.api import parse_args
 from trac.wiki.macros import WikiMacroBase
 from trac.wiki import Formatter
 from trac.wiki import WikiPage
-from trac.web.chrome import INavigationContributor
+from trac.web.api import IRequestFilter
+from trac.web.chrome import ITemplateProvider, add_link, add_stylesheet, add_script, add_script_data
 from trac.web import IRequestHandler
 from trac.util.html import html
 import StringIO
@@ -28,7 +29,7 @@ import string
 __all__ = ['WikiCommentsPlugin']
 
 class WikiCommentsPlugin(Component):
-    implements(IRequestHandler)
+    implements(IRequestHandler, IRequestFilter, ITemplateProvider)
     #implements(INavigationContributor, IRequestHandler)
 
     """AutoNav finds all references in the wiki section to this Document
@@ -46,6 +47,24 @@ class WikiCommentsPlugin(Component):
          
     `[[AutoNav(MyPage, MyPageToo, MyPageThree)]]` -> references merged with MyPage, MyPageToo and MyPageThree
     """
+
+    # ITemplateProvider#get_htdocs_dirs
+    def get_htdocs_dirs(self):
+        from pkg_resources import resource_filename
+        return [('wikicomments', resource_filename(__name__, 'htdocs'))]
+    
+    # ITemplateProvider#get_templates_dirs
+    def get_templates_dirs(self):
+        return []
+
+     # IRequestFilter#pre_process_request
+    def pre_process_request(self, req, handler):
+        return handler
+
+    # IRequestFilter#post_process_request
+    def post_process_request(self, req, template, data, content_type):
+        add_script(req, 'wikicomments/wikicomments.js')
+        return template, data, content_type        
     
     def match_request(self, req):
         return req.path_info == '/add-wiki-comment' and req.args['comment_submit'] == u'Submit'
