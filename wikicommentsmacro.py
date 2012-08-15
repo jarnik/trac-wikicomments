@@ -50,7 +50,7 @@ class WikiCommentsMacro(WikiMacroBase):
         return """
     <div class="comment" style="width: 600px;margin-left:30px;">
         <a name='"""+comment_id+"""'></a>
-        <div class="comment_head" style="width: 600px; background:#eee;font-size:80%;">
+        <div class="comment_head" style="width: 600px; background:#eee;font-size:80%;padding:3px;">
             """+comment_author+""": """+comment_date+"""
             <a href="#reply" id='reply_"""+comment_id+"""'>Reply</a>
         </div>
