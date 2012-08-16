@@ -25,6 +25,7 @@ import StringIO
 import trac.perm
 import random
 import string
+from datetime import datetime
 
 __all__ = ['WikiCommentsPlugin']
 
@@ -77,7 +78,9 @@ class WikiCommentsPlugin(Component):
         author_name = req.authname
         comment_text = req.args['comment']
         comment_parent = req.args['comment_parent']
-        comment_date = '2012-07-12 12:10:31'
+        dt = datetime.now()
+        comment_date = dt.strftime("%Y-%m-%d %H:%M:%S")
+        #comment_date = '2012-07-12 12:10:31'
         comment_id = "%032x" % random.getrandbits(128)
         redirect_url = "%s%s#%s" % (req.base_path, req.args['target_page'],comment_id)
         changeset_comment = "%s..." % comment_text[:20]
