@@ -59,7 +59,10 @@ class WikiCommentsPlugin(Component):
     # IRequestFilter#post_process_request
     def post_process_request(self, req, template, data, content_type):
         add_script(req, 'wikicomments/wikicomments.js')
-        add_script_data(req, { '_wikicomments_author': req.authname })
+        add_script_data(req,  {
+            '_wikicomments_author': req.authname,
+            '_wikicomments_base': "%s/chrome/wikicomments" % req.base_path 
+        })
         return template, data, content_type        
     
     def match_request(self, req):

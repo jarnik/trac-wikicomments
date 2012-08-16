@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
             }
         }
 
-        var commentButton = $('<a href="#" id="wikicomment" title="Comment" tabindex="400">Comment</a>');
+        var commentButton = $('<a href="#" id="wikicomment" title="Comment" tabindex="400" style="background:url('+_wikicomments_base+'/toolbar-comment-icon.png) no-repeat center"></a>');
         $(".wikitoolbar").width( $(".wikitoolbar").width() + 26 );
         $(".wikitoolbar").append( $(commentButton) );
         $(".wikitoolbar").children().last().click( function() { 
