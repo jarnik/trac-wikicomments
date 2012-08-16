@@ -46,8 +46,6 @@ jQuery(document).ready(function($) {
           }
       }
 
-      
-
       var commentButton = $('<a href="#" id="wikicomment" title="Comment" tabindex="400">Comment</a>');
       $(".wikitoolbar").width( $(".wikitoolbar").width() + 26 );
       $(".wikitoolbar").append( $(commentButton) );
@@ -57,7 +55,7 @@ jQuery(document).ready(function($) {
         var dt = new Date();
         var timestamp = (dt.getFullYear()+"-"+(dt.getMonth() + 1)+"-"+dt.getDate()+" "+dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds());
         encloseSelection(
-            '\n{{{#!WikiComments author="anonymous" date="'+timestamp+'" id="'+id+'"\n',
+            '\n{{{#!WikiComments author="'+_wikicomments_author+'" date="'+timestamp+'" id="'+id+'"\n',
             '\n='+id+'\n}}}\n'
         );
       });
@@ -112,7 +110,7 @@ jQuery(document).ready(function($) {
         var id = randomString();
         var dt = new Date();
         var timestamp = (dt.getFullYear()+"-"+(dt.getMonth() + 1)+"-"+dt.getDate()+" "+dt.getHours()+":"+dt.getMinutes()+":"+dt.getSeconds());
-        var commentPrefix = '\n{{{#!WikiComments author="anonymous" date="'+timestamp+'" id="'+id+'"\n';
+        var commentPrefix = '\n{{{#!WikiComments author="'+_wikicomments_author+'" date="'+timestamp+'" id="'+id+'"\n';
         var commentPostfix = '\n='+id+'\n}}}\n';
 
         if (text) {
@@ -123,7 +121,6 @@ jQuery(document).ready(function($) {
         this.insertHTML(anonymous.innerHTML);
         this.selectionChanged();
     };
-
 
       $(".wysiwyg-toolbar").each(function() { addWysiwygWikiCommentButton(this) });
   }, 20);
