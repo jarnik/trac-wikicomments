@@ -61,7 +61,7 @@ jQuery(document).ready(function($) {
     }
 
     function addWysiwygWikiCommentButton( list ) {
-        var commentButton = $('<li title="Comment" class=""><a id="wt-comment" href="#" onmousedown="return false" tabindex="-1"></a></li>');
+        var commentButton = $('<li title="Comment" class=""><a id="wt-comment" href="#" onmousedown="return false" tabindex="-1" style="background:url('+_wikicomments_base+'/toolbar-comment-icon.png) no-repeat center"></a></li>');
         $(list).width( $(list).width() + 26 );
         $(list).find("ul").first().append( $(commentButton) );
         $(commentButton).click(function(){
