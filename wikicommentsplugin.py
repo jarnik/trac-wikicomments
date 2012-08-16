@@ -1,26 +1,18 @@
 # -*- coding: utf-8 -*-
 #
-# AutoNav macro for Trac 0.11
+# WikiComments plugin for Trac 0.12.3
 #
-# Author: Anders Jansson <anders dot jansson at kastanj dot net>
+# Author: Jaroslav Meloun <jaroslav dot meloun at gmail dot com>
 # License: BSD
-# Modified by: 
-#   Andrew Stromnov <stromnov at gmail dot com>
-#   Christian Boos <cboos at neuf fr>
 # http://trac.edgewall.org/wiki/TracDev/PluginDevelopment
 
-from genshi.builder import tag
-from genshi.core import Markup
-
 from trac.core import *
-from trac.wiki.api import parse_args
 from trac.wiki.macros import WikiMacroBase
 from trac.wiki import Formatter
 from trac.wiki import WikiPage
 from trac.web.api import IRequestFilter
-from trac.web.chrome import ITemplateProvider, add_link, add_stylesheet, add_script, add_script_data
+from trac.web.chrome import ITemplateProvider, add_script, add_script_data
 from trac.web import IRequestHandler
-from trac.util.html import html
 import StringIO
 import trac.perm
 import random
@@ -33,20 +25,22 @@ class WikiCommentsPlugin(Component):
     implements(IRequestHandler, IRequestFilter, ITemplateProvider)
     #implements(INavigationContributor, IRequestHandler)
 
-    """AutoNav finds all references in the wiki section to this Document
+    """WikiMacro formats a given to look like a comment, adding a form to submit followup comments.
 
-    It then shows them in a sorted list.
+    The followup forms are submitted to a <env_name>/wikicomments page, inserted into a page text, and then 
+    you are redirected back to the page itself, with an anchor to a new comment.
 
-    Used with no arguments only produces a list from the database. Arguments
-    sent to AutoNav will be merged inside the list too. Separate the
-    arguments with comma.
+    Has to be used in a following multi-line macro format:
     
     Example:
-    `[[AutoNav()]]`	-> only references
-    
-    `[[AutoNav(MyPage)]]` -> references merged and sorted with MyPage
-         
-    `[[AutoNav(MyPage, MyPageToo, MyPageThree)]]` -> references merged with MyPage, MyPageToo and MyPageThree
+    `{{{#!WikiComments author="jaroslav meloun" date="2012-8-16 10:39:11" id="2eb188da0aee2f6272b9651e2b8f1a11"
+    Hey, this a comment text!
+    =2eb188da0aee2f6272b9651e2b8f1a11
+    }}}`
+
+    Upon entering first comment via toolbar button, author name, date and id are filled in automatically (thanks to 
+    wikicommentsplugin javascript).
+    In followups, they are also filled in automatically (now thanks to the wikicommentsplugin itself).
     """
 
     # ITemplateProvider#get_htdocs_dirs
@@ -72,7 +66,6 @@ class WikiCommentsPlugin(Component):
         return req.path_info == '/add-wiki-comment' and req.args['comment_submit'] == u'Submit'
     def process_request(self, req):
         req.perm.assert_permission ('WIKI_MODIFY')
-        #self.req.hdf.setValue('wiki.action', 'addComment')
         page_name = req.args['target_page'][req.args['target_page'].find('wiki')+5:]
         p = WikiPage(self.env, page_name )
 
@@ -81,7 +74,6 @@ class WikiCommentsPlugin(Component):
         comment_parent = req.args['comment_parent']
         dt = datetime.now()
         comment_date = dt.strftime("%Y-%m-%d %H:%M:%S")
-        #comment_date = '2012-07-12 12:10:31'
         comment_id = "%032x" % random.getrandbits(128)
         redirect_url = "%s%s#%s" % (req.base_path, req.args['target_page'],comment_id)
         changeset_comment = "%s..." % comment_text[:20]
@@ -91,9 +83,6 @@ class WikiCommentsPlugin(Component):
             heads = string.count(p.text,"{{{#!WikiComments",0,insertion_index)
             tails = string.count(p.text,"}}}",0,insertion_index)
             level = heads - tails
-            #self.env.log.debug("*** inserting at %s level %i = %i - %i " % (insertion_index, level, heads, tails ) )
-            #padding_short = "    " * max(0,level-1)
-            #padding = "    " * level
             padding = ""
             comment_out = '%s{{{#!WikiComments author="%s" date="%s" id="%s""\n%s%s\n%s=%s\n%s}}}\n' \
                 % (padding, author_name,comment_date,comment_id,padding,comment_text,padding,comment_id,padding)
@@ -102,6 +91,7 @@ class WikiCommentsPlugin(Component):
         p.save( author_name, changeset_comment, req.remote_addr )
         req.redirect(redirect_url)
 
+        #for debug purposes
         #content = req.remote_user+'Hello World!'
         #req.send_response(200)
         #req.send_header('Content-Type', 'text/plain')

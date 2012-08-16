@@ -1,18 +1,11 @@
 # -*- coding: utf-8 -*-
 #
-# AutoNav macro for Trac 0.11
+# WikiComments macro for Trac 0.12.3
 #
-# Author: Anders Jansson <anders dot jansson at kastanj dot net>
+# Author: Jaroslav Meloun <jaroslav dot meloun at gmail dot com>
 # License: BSD
-# Modified by: 
-#   Andrew Stromnov <stromnov at gmail dot com>
-#   Christian Boos <cboos at neuf fr>
-
-from genshi.builder import tag
-from genshi.core import Markup
 
 from trac.core import *
-from trac.wiki.api import parse_args
 from trac.wiki.macros import WikiMacroBase
 from trac.wiki import Formatter
 import StringIO
@@ -20,22 +13,24 @@ import StringIO
 __all__ = ['WikiCommentsMacro']
 
 class WikiCommentsMacro(WikiMacroBase):
-    """AutoNav finds all references in the wiki section to this Document
+    """WikiMacro formats a given to look like a comment, adding a form to submit followup comments.
 
-    It then shows them in a sorted list.
+    The followup forms are submitted to a <env_name>/wikicomments page, inserted into a page text, and then 
+    you are redirected back to the page itself, with an anchor to a new comment.
 
-    Used with no arguments only produces a list from the database. Arguments
-    sent to AutoNav will be merged inside the list too. Separate the
-    arguments with comma.
+    Has to be used in a following multi-line macro format:
     
     Example:
-    `[[AutoNav()]]`	-> only references
-    
-    `[[AutoNav(MyPage)]]` -> references merged and sorted with MyPage
-         
-    `[[AutoNav(MyPage, MyPageToo, MyPageThree)]]` -> references merged with MyPage, MyPageToo and MyPageThree
+    `{{{#!WikiComments author="jaroslav meloun" date="2012-8-16 10:39:11" id="2eb188da0aee2f6272b9651e2b8f1a11"
+    Hey, this a comment text!
+    =2eb188da0aee2f6272b9651e2b8f1a11
+    }}}`
+
+    Upon entering first comment via toolbar button, author name, date and id are filled in automatically (thanks to 
+    wikicommentsplugin javascript).
+    In followups, they are also filled in automatically (now thanks to the wikicommentsplugin itself).
     """
-    
+        
     def expand_macro(self, formatter, name, text, args):
         out = StringIO.StringIO()
         Formatter(self.env, formatter.context).format(text, out)
