@@ -7,7 +7,7 @@ Default installation of Trac does not include any way to conveniently annotate a
 I made a plugin for that, compatible with Trac 0.12.3
 
 ## Screenshots:
-
+![Screenshot 1](trac_wikicomments_01.png) ![Screenshot 2](trac_wikicomments_02.png)
 
 ## Installation:
 - download [WikiComments-1.0-py2.6.egg](http://www.jarnik.com/wordpress/wp-content/uploads/2012/08/WikiComments-1.0-py2.6.egg) (or see [link](http://trac-hacks.org/wiki/WikiCommentsPlugin))
@@ -15,6 +15,7 @@ I made a plugin for that, compatible with Trac 0.12.3
 - go to Administration > Plugins > WikiComments and check all options
 
 ## How it works:
+![Screenshot 3](trac_wikicomments_03.png)
 - first comment has to be inserted using edit mode – just click bubble icon (see syntax below)
 - followup comments can be attached using a simple form in view mode (see pictures above)
 
